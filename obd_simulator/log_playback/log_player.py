@@ -1,4 +1,3 @@
-
 # File: obd_simulator/log_playback/log_player.py
 """
 Log playback OBD-II simulator that replays recorded data.

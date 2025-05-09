@@ -9,7 +9,7 @@ import json
 import random
 import logging
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import List, Dict, Any, bool
 
 logger = logging.getLogger(__name__)
 
@@ -289,5 +289,42 @@ def create_real_world_log_file(output_file: str, duration_minutes: int = 30) -> 
                     coolant_temp = 90 + random.uniform(-2, 2)
             else:
                 # Cool down when engine off
-                coolant_temp#
-                # Cool down when engine off
+                coolant_temp = max(20, coolant_temp - 0.05)
+            
+            # Create log entry
+            entry = {
+                'timestamp': timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                'RPM': round(rpm, 2),
+                'SPEED': round(speed, 2),
+                'COOLANT_TEMP': round(coolant_temp, 2),
+                'THROTTLE_POS': round(throttle, 2),
+                'FUEL_LEVEL': round(fuel_level, 2),
+                'ENGINE_LOAD': round(engine_load, 2),
+                'INTAKE_TEMP': round(intake_temp, 2),
+                'MAF': round(maf, 2)
+            }
+            
+            all_data.append(entry)
+    
+    # Write to file
+    try:
+        file_ext = os.path.splitext(output_file)[1].lower()
+        
+        if file_ext == '.csv':
+            with open(output_file, 'w', newline='') as f:
+                if all_data:
+                    writer = csv.DictWriter(f, fieldnames=all_data[0].keys())
+                    writer.writeheader()
+                    writer.writerows(all_data)
+        elif file_ext == '.json':
+            with open(output_file, 'w') as f:
+                json.dump(all_data, f, indent=2)
+        else:
+            logger.error(f"Unsupported file format: {file_ext}")
+            return False
+            
+        logger.info(f"Real-world log file created with {len(all_data)} entries")
+        return True
+    except Exception as e:
+        logger.error(f"Error creating log file: {e}")
+        return False
