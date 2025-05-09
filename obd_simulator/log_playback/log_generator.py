@@ -9,7 +9,7 @@ import json
 import random
 import logging
 from datetime import datetime, timedelta
-from typing import List, Dict, Any, bool
+from typing import List, Dict, Any
 
 logger = logging.getLogger(__name__)
 

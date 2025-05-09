@@ -34,15 +34,3 @@ setup(
         ],
     },
 )
-
-# File: requirements.txt
-"""
-Project dependencies for the OBD-II Simulator
-"""
-pyserial>=3.5
-pint>=0.18
-matplotlib>=3.5.2
-numpy>=1.21.0
-pytest>=7.0.0
-pandas>=1.3.0
-
